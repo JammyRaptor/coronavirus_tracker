@@ -67,5 +67,6 @@ def get_audio():
             print('Exception:', str(e))
     
     return said.lower()
-
-speak(get_audio())
+audio = get_audio()
+print(audio)
+speak(audio)
