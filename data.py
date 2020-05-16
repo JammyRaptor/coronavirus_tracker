@@ -9,6 +9,7 @@ class Data:
             'api_key': self.api_key
         }
         self.get_data()
+        self.get_country_list()
     
     def get_data(self):
         response = requests.get(f'https://www.parsehub.com/api/v2/projects/{self.project_token}/last_ready_run/data', params = self.params)
@@ -38,6 +39,13 @@ class Data:
                 stripped = entry['population'].replace(',', '') 
                 entry['population'] = int(stripped)
 
+    def get_country_list(self):
+        self.country_list = []
+
+        for country in self.data['countries']:
+            self.country_list.append(country['name'].lower())
+        #print(self.country_list)
+
     def get_total_cases(self):
         data = self.data['total']
 
@@ -65,7 +73,6 @@ class Data:
         for content in data:
             if content['name'].lower() == country.lower():
                 return content
-        
         return '0'
 
     def get_most(self, criteria):
