@@ -88,7 +88,7 @@ def main():
     while True:
         clear()
         
-        print('I\'m listning...')
+        print('I\'m listening...')
         text = get_audio()
         clear()
         print(f'Question: {text}\n')
