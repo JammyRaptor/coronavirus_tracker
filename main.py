@@ -87,8 +87,10 @@ def main():
     UPDATE_COMMAND = 'update'
     while True:
         clear()
+        
         print('I\'m listning...')
         text = get_audio()
+        clear()
         print(f'Question: {text}\n')
         
         result = None
@@ -102,9 +104,9 @@ def main():
                 if pattern.match(text):
                     result = func(text, data)
                     break 
-        if result:
+        
             
-            print(f'Answer {result}')
+        print(f'Answer {result}')
         
         if UPDATE_COMMAND in text:
             data.update_data()
@@ -112,7 +114,7 @@ def main():
         if ENDWORD in text:
             break
         else:
-            time.sleep(4)
+            time.sleep(5)
         
 if __name__ == '__main__':
     
