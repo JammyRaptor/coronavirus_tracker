@@ -1,5 +1,7 @@
 import requests
 import json
+import threading
+import time
 
 class Data:
     def __init__(self, api_key, project_token):
@@ -8,13 +10,14 @@ class Data:
         self.params = {
             'api_key': self.api_key
         }
-        self.get_data()
+        self.data = self.get_data()
         self.get_country_list()
     
     def get_data(self):
         response = requests.get(f'https://www.parsehub.com/api/v2/projects/{self.project_token}/last_ready_run/data', params = self.params)
-        self.data = json.loads(response.text)
-        for entry in self.data['countries']:
+        data = json.loads(response.text)
+        
+        for entry in data['countries']:
             if 'cases' not in entry.keys():
                 entry['cases'] = 0
             else:
@@ -38,7 +41,7 @@ class Data:
             else:
                 stripped = entry['population'].replace(',', '') 
                 entry['population'] = int(stripped)
-
+        return data
     def get_country_list(self):
         self.country_list = []
 
@@ -86,3 +89,20 @@ class Data:
         
         sorteddata = sorted(data, key=lambda k: k[criteria] )
         return sorteddata[0] 
+
+    def update_data(self):
+        response = requests.post(f'https://www.parsehub.com/api/v2/projects/{self.project_token}/run', params=self.params)
+        
+
+        def poll():
+            time.sleep(0.1)
+            old_data = self.data
+            while True:
+                new_data = self.get_data()
+                if new_data != old_data:
+                    self.data = new_data
+                    print('data updated!')
+                    break
+                time.sleep(5)
+        t = threading.Thread(target=poll)
+        t.start()

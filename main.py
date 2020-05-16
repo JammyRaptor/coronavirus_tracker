@@ -84,6 +84,7 @@ def main():
         re.compile('[\w\d\s]+tested'): tests,
     }
 
+    UPDATE_COMMAND = 'update'
     while True:
         clear()
         print('I\'m listning...')
@@ -104,7 +105,10 @@ def main():
         if result:
             
             print(f'Answer {result}')
-            
+        
+        if UPDATE_COMMAND in text:
+            data.update_data()
+            print('Data is being updated, this may be a while!')
         if ENDWORD in text:
             break
         else:
