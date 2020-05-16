@@ -92,7 +92,6 @@ class Data:
 
     def update_data(self):
         response = requests.post(f'https://www.parsehub.com/api/v2/projects/{self.project_token}/run', params=self.params)
-        
 
         def poll():
             time.sleep(0.1)
@@ -104,5 +103,6 @@ class Data:
                     print('data updated!')
                     break
                 time.sleep(5)
+
         t = threading.Thread(target=poll)
         t.start()
